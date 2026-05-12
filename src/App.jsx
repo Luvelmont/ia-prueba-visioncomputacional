@@ -1,6 +1,14 @@
 import { useState } from 'react'
 import './App.css'
 
+const imagenesResultados = Object.values(
+  import.meta.glob('./assets/Resultados/*.{png,jpg,jpeg,webp}', {
+    eager: true,
+    query: '?url',
+    import: 'default'
+  })
+)
+
 function App() {
   const [showExample, setShowExample] = useState(false)
 
@@ -143,6 +151,25 @@ function App() {
         </p>
       </section>
 
+
+    <section className="future-engineers-section">
+      <div className="section-header">
+        <h2>Imágenes de futuros ingenieros</h2>
+        <p>
+          Estas imagenes son las que subieron y fueron analizadas por visión computacional
+        </p>
+      </div>
+
+      <div className="future-engineers-grid">
+        {
+          imagenesResultados.map((imagen, index) => (
+            <div key={index} className="future-engineers-card">
+              <img src={imagen} alt={`Resultado ${index + 1}`} />
+            </div>
+          ))
+        }
+      </div>
+    </section>
     </div>
   )
 }
