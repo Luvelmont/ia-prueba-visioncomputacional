@@ -33,24 +33,27 @@ function App() {
 
     setLoading(true)
 
-    const formData = new FormData()
-    formData.append('image', image)
+  const formData = new FormData()
+  formData.append('image', image)
 
-    try {
-      const response = await fetch('http://127.0.0.1:5000/predict', {
-        method: 'POST',
-        body: formData
-      })
+  const response = await fetch('https://ia-vision-backend.onrender.com/predict', {
+  method: 'POST',
+  body: formData
+})
 
-      const data = await response.json()
+if (!response.ok) {
+  const errorText = await response.text()
+  console.error('Error del backend:', errorText)
+  alert('El backend respondió con error. Revisa Render Logs.')
+  setLoading(false)
+  return
+}
 
-      setResults(data.detections)
-      setPreview(data.image)
+const data = await response.json()
 
-    } catch (error) {
-      console.error(error)
-      alert('No se pudo conectar con la IA. Revisa que el backend esté encendido.')
-    }
+setResults(data.detections)
+// setPreview(data.image)
+
 
     setLoading(false)
   }
